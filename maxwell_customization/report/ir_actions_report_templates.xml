@@ -4,5 +4,27 @@
         <xpath expr='//t[@t-if="not line.display_type"]' position="attributes">
             <attribute name="t-if">not line.display_type and not line.is_hidden</attribute>
         </xpath>
+
+        <xpath expr='//p[@id="fiscal_position_remark"]' position="after">
+                <div class="oe_structure">
+                    <table class="table table-sm o_main_table table-borderless">
+                        <tbody>
+                            <tr><td><p><b><u>Prepared by:</u></b></p></td><td><p></p></td><td><p><b><u>Received By:</u></b></p></td></tr>
+                            <tr><td><p>Name &amp; Signature :</p></td><td><p></p></td><td><p>Name &amp; Signature:</p></td></tr>
+                            <tr><td><p>Designation :</p></td><td><p></p></td><td><p>Designation:</p></td></tr>
+                            <tr><td><p>Date :</p></td><td><p></p></td><td><p>Date:</p></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            <span class="oe_structure align-middle">
+                Account Details for the Payment’s Bank Transfer:-<br/>
+                Maxwell Trading &amp; Contracting WLL<br/>
+                Ac No.0252-040550-001, IBAN: QA22 QNBA 0000 0000 0252-040550-001,<br/>
+                Swift Code: QNBAQAQA, Qatar National Bank – Al Wakrah Branch<br/>
+            </span>
+        </xpath>
+
     </template>
+
+
 </odoo>
