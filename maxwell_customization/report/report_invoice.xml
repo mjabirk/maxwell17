@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+            <xpath expr='//div[@name="comment"]' position="after">
+                    <div  t-if="o.move_type in ('out_invoice', 'in_refund')" class="oe_structure">
+                        <table class="table table-sm o_main_table table-borderless">
+                            <tbody style="width:100%;
+                    border-top-style: solid;border-top-color: #383535;border-top-width: 1px;
+                    border-right-style: solid;border-right-color: #383535;border-right-width: 1px;
+                    border-left-style: solid;border-left-color: #383535;border-left-width: 1px;
+                    border-bottom-style: solid;border-bottom-color: #383535;border-bottom-width: 1px;">
+                                <tr ><td><p><b><u>Prepared by:</u></b></p></td><td style="border-right-style: solid;border-right-color: #383535;border-right-width: 1px;"><p/></td><td><p><b><u>Received By:</u></b></p></td></tr>
+                                <tr><td><p>Name &amp; Signature :</p></td><td  style="border-right-style: solid;border-right-color: #383535;border-right-width: 1px;"><p/></td><td><p>Name &amp; Signature:</p></td></tr>
+                                <tr><td><p>Designation :</p></td><td  style="border-right-style: solid;border-right-color: #383535;border-right-width: 1px;"><p/></td><td><p>Designation:</p></td></tr>
+                                <tr><td><p>Date :</p></td><td  style="border-right-style: solid;border-right-color: #383535;border-right-width: 1px;"><p/></td><td><p>Date:</p></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <span  t-if="o.move_type in ('out_invoice', 'in_refund')" class="oe_structure align-middle">
+                    Account Details for the Payment’s Bank Transfer:-<br/>
+                    Maxwell Trading &amp; Contracting WLL<br/>
+                    Ac No.0252-040550-001, IBAN: QA22 QNBA 0000 0000 0252-040550-001,<br/>
+                    Swift Code: QNBAQAQA, Qatar National Bank – Al Wakrah Branch<br/>
+                </span>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

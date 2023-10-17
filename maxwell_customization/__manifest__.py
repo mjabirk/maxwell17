@@ -21,6 +21,7 @@
         'views/purchase_order_views.xml',
         'report/ir_actions_report_templates.xml',
         'report/purchase_order_templates.xml',
+        'report/report_invoice.xml',
     ],
     'images': ['static/description/background.png', ],
     'auto_install': False,
