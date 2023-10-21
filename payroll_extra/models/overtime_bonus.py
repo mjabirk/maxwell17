@@ -14,7 +14,7 @@ class OvertimeBonusType(models.Model):
 
     name = fields.Char(string='Name')
     rate = fields.Float(string="Rate")
-    type = fields.Selection([('manual', 'Manual'),('wage', 'Wage'),('fixed', 'Fixed'),], string='Incentive Type', required=True)
+    type = fields.Selection([('manual', 'Manual'),('wage', 'Wage'),('fixed', 'Fixed'),('deduction', 'Deduction'),], string='Incentive Type', required=True)
 
 class OvertimeBonus(models.Model):
     _name = 'overtime.bonus'
@@ -25,7 +25,7 @@ class OvertimeBonus(models.Model):
     name = fields.Char(string='Description',states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True, required=True,)
     date_from = fields.Datetime(string='Date',states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True, required=True,)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company, required=True,states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]})
-    type = fields.Selection([('overtime', 'Overtime'),('bonus', 'Bonus'),('productivity', 'Productivity'),], 'Type Category', default='overtime', readonly=False,)
+    type = fields.Selection([('deduction', 'Deduction'),('overtime', 'Overtime'),('bonus', 'Bonus'),('productivity', 'Productivity'),], 'Type Category', default='overtime', readonly=False,)
     company_currency_id = fields.Many2one('res.currency', string="Report Company Currency", related='company_id.currency_id', readonly=True, tracking=True,)
     duration = fields.Float(string="Duration",states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True,)
     amount = fields.Float(string="Quantity / Amount",states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True,)
@@ -41,7 +41,7 @@ class OvertimeBonus(models.Model):
     @api.onchange('type_id')
     def _onchange_type_id(self):
         if self.type_id:
-            self.type = self.type_id.type == 'fixed' and 'productivity' or (self.type_id.type == 'wage' and 'overtime' or 'bonus')
+            self.type = self.type_id.type == 'fixed' and 'productivity' or (self.type_id.type == 'wage' and 'overtime' or (self.type_id.type == 'manual' and 'bonus' or 'deduction'))
 
     @api.depends('employee_id', 'amount','duration','type')
     def _compute_amount(self):
@@ -54,6 +54,8 @@ class OvertimeBonus(models.Model):
                 rec.ot_amount = rec.amount
             elif rec.type == 'productivity':
                 rec.ot_amount =rec.amount * rec.type_id.rate
+            elif rec.type == 'deduction':
+                rec.ot_amount = -1 * rec.amount
             else:
                 rec.ot_amount = 0.0
 

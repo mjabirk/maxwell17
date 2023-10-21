@@ -7,12 +7,12 @@
 			<field name="name">overtime.bonus.type.form</field>
 			<field name="model">overtime.bonus.type</field>
 			<field name="arch" type="xml">
-				<form string="Bonus Type">
+				<form string="Type">
 					<sheet>
 						<group>
 							<group>
 								<field name="name" />
-								<field name="rate"  invisible="type in ['wage', 'manual']"  />
+								<field name="rate" attrs="{'invisible': [('type','in', ('wage', 'manual','deduction'))]}" />
 								<field name="type" />
 							</group>
 							<group/>
@@ -31,7 +31,7 @@
 			<field name="name">overtime.bonus.type.tree</field>
 			<field name="model">overtime.bonus.type</field>
 			<field name="arch" type="xml">
-				<tree string="Bonus Type">
+				<tree string="Types">
 					<field name="name" />
 					<field name="type" />
 					<field name="rate" />
@@ -40,20 +40,20 @@
 		</record>
 
 		<record id="action_overtime_type_bonus" model="ir.actions.act_window">
-			<field name="name">Bonus Type</field>
+			<field name="name">Type</field>
 			<field name="res_model">overtime.bonus.type</field>
 			<field name="view_mode">tree,form</field>
 			<field name="help">Bonus Type</field>
 		</record>
 
-		<menuitem parent="menu_overtime_bonus_root"  id="menu_overtime_type_bonus" name="Incentive Type" action="action_overtime_type_bonus"  sequence="30" groups="payroll_extra.group_benefit_manager"/>
+		<menuitem parent="menu_overtime_bonus_root"  id="menu_overtime_type_bonus" name="Types" action="action_overtime_type_bonus"  sequence="30" groups="payroll_extra.group_benefit_manager"/>
 
 		<!-- Bonus -->
 		<record model="ir.ui.view" id="view_overtime_bonus_form">
 			<field name="name">overtime.bonus.form</field>
 			<field name="model">overtime.bonus</field>
 			<field name="arch" type="xml">
-				<form string="Overtime">
+				<form string="Addition/Deduction">
 					<sheet>
 						<group>
 							<group>
@@ -63,16 +63,16 @@
 								<field name="type"  invisible="1"/>
 								<field name="employee_id" />
 								<field name="type_id"   widget="selection"/>
-								<field name="duration" widget="float_time" readonly="state != 'draft' or type != 'overtime'" string="Duration"/>
-								<field name="amount"  widget="monetary" options="{'currency_field': 'company_currency_id'}" readonly="state != 'draft' or type == 'overtime'" />
+								<field name="duration" widget="float_time" attrs="{'readonly': ['|',('state','!=','draft'), ('type', '!=', 'overtime')]}" string="Duration"/>
+								<field name="amount"  widget="monetary" options="{'currency_field': 'company_currency_id'}"  attrs="{'readonly': ['|',('state','!=','draft'), ('type', '=', 'overtime')]}"/>
 								<field name="state" />
 								<br/>
 								<field name="notes" nolabel="1" colspan="4"/>
 							</group>
 							<group>
-								<button name="button_approve" type="object" string="Approve" class="btn-success" invisible="state in ('approved', 'rejected')"   groups="payroll_extra.group_benefit_manager"/>
-								<button name="button_reject" type="object" string="Reject" class="btn-danger" invisible="state in ('approved', 'rejected')"  groups="payroll_extra.group_benefit_manager"/>
-								<button name="set_to_draft" type="object" string="Set to Draft" class="btn-warning" invisible="state == 'draft'" groups="payroll_extra.group_benefit_manager"/>
+								<button name="button_approve" type="object" string="Approve" class="btn-success" attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" groups="payroll_extra.group_benefit_manager"/>
+								<button name="button_reject" type="object" string="Reject" class="btn-danger" attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" groups="payroll_extra.group_benefit_manager"/>
+								<button name="set_to_draft" type="object" string="Set to Draft" class="btn-warning" attrs="{'invisible': [('state','in', ('draft',))]}"  groups="payroll_extra.group_benefit_manager"/>
 
 							</group>
 							<group/>
@@ -93,22 +93,22 @@
 			<field name="arch" type="xml">
 				<tree  string="Overtime"  editable="top" decoration-danger="state=='rejected'"  decoration-info="state=='draft'" decoration-muted="state=='approved'">
 					<header>
-						<button name="button_approve" type="object" string="Approve" class="btn-success" invisible="state in ('approved', 'rejected')"  groups="payroll_extra.group_benefit_manager"/>
+						<button name="button_approve" type="object" string="Approve" class="btn-success" attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" groups="payroll_extra.group_benefit_manager"/>
 					</header>
-					<field name="company_currency_id" column_invisible="1"/>
+					<field name="company_currency_id" invisible="1"/>
 					<field name="date_from" />
 					<field name="name" />
 					<field name="employee_id" />
 					<field name="type_id"  widget="selection"/>
-					<field name="type"  column_invisible="1"/>
-					<field name="duration" widget="float_time" readonly = "state != 'draft' or type != 'overtime'"  string="Duration"/>   <!--attrs="{'readonly': ['|',('state','!=','draft'), ('type', '!=', 'overtime')]}"-->
-					<field name="amount" readonly="state != 'draft' or type == 'overtime'" /> <!--attrs="{'readonly': ['|',('state','!=','draft'), ('type', '=', 'overtime')]}"-->
-					<button name="button_approve" type="object" string="Approve" class="btn-success" invisible="state in ('approved', 'rejected')"  groups="payroll_extra.group_benefit_manager"/> <!--attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" -->
-					<button name="button_reject" type="object" string="Reject" class="btn-danger"  invisible="state in ('approved', 'rejected')"  groups="payroll_extra.group_benefit_manager"/> <!-- attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" -->
+					<field name="type"  invisible="1"/>
+					<field name="duration" widget="float_time" attrs="{'readonly': ['|',('state','!=','draft'), ('type', '!=', 'overtime')]}" string="Duration"/>
+					<field name="amount"  attrs="{'readonly': ['|',('state','!=','draft'), ('type', '=', 'overtime')]}"/>
+					<button name="button_approve" type="object" string="Approve" class="btn-success" attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" groups="payroll_extra.group_benefit_manager"/>
+					<button name="button_reject" type="object" string="Reject" class="btn-danger" attrs="{'invisible': [('state','in', ('approved', 'rejected'))]}" groups="payroll_extra.group_benefit_manager"/>
 					<field name="state" />
-					<button name="set_to_draft" type="object" string="Set to Draft" class="btn-warning" invisible="state in ('draft', )" groups="payroll_extra.group_benefit_manager"/> <!--  attrs="{'invisible': [('state','in', ('draft',))]}"-->
+					<button name="set_to_draft" type="object" string="Set to Draft" class="btn-warning" attrs="{'invisible': [('state','in', ('draft',))]}" groups="payroll_extra.group_benefit_manager"/>
 					<field name="create_uid" />
-					<button name="action_open_wizard" type="object" icon="fa-external-link" class="oe_edit_only" title="Open Overtime" /> <!-- -->
+					<button name="action_open_wizard" type="object" icon="fa-external-link" class="oe_edit_only" title="Open Overtime" />
 					<field name="department_id" groups="payroll_extra.group_benefit_manager"/>
 					<field name="job_id"  groups="payroll_extra.group_benefit_manager"/>
 					<field name="ot_amount"  groups="payroll_extra.group_benefit_manager"/>
