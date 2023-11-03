@@ -59,10 +59,10 @@
 							<group>
 								<field name="company_currency_id" invisible="1"/>
 								<field name="date_from" />
-								<field name="name" />
+								<field name="name" readonly="state != 'draft'"/>
 								<field name="type"  invisible="1"/>
-								<field name="employee_id" />
-								<field name="type_id"   widget="selection"/>
+								<field name="employee_id"  readonly="state != 'draft'"/>
+								<field name="type_id"   readonly="state != 'draft'" widget="selection"/>
 								<field name="duration" widget="float_time" readonly="state != 'draft' or type != 'overtime'" string="Duration"/>
 								<field name="amount"  widget="monetary" options="{'currency_field': 'company_currency_id'}" readonly="state != 'draft' or type == 'overtime'" />
 								<field name="state" />
@@ -96,10 +96,10 @@
 						<button name="button_approve" type="object" string="Approve" class="btn-success" invisible="state in ('approved', 'rejected')"  groups="payroll_extra.group_benefit_manager"/>
 					</header>
 					<field name="company_currency_id" column_invisible="1"/>
-					<field name="date_from" />
-					<field name="name" />
-					<field name="employee_id" />
-					<field name="type_id"  widget="selection"/>
+					<field name="date_from"  readonly="state != 'draft'"/>
+					<field name="name"  readonly="state != 'draft'"/>
+					<field name="employee_id"  readonly="state != 'draft'"/>
+					<field name="type_id"  widget="selection"  readonly="state != 'draft'"/>
 					<field name="type"  column_invisible="1"/>
 					<field name="duration" widget="float_time" readonly = "state != 'draft' or type != 'overtime'"  string="Duration"/>   <!--attrs="{'readonly': ['|',('state','!=','draft'), ('type', '!=', 'overtime')]}"-->
 					<field name="amount" readonly="state != 'draft' or type == 'overtime'" /> <!--attrs="{'readonly': ['|',('state','!=','draft'), ('type', '=', 'overtime')]}"-->

@@ -22,19 +22,19 @@ class OvertimeBonus(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'analytic.mixin']
     _order = "date_from desc, id desc"
 
-    name = fields.Char(string='Description',states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True, required=True,)
-    date_from = fields.Datetime(string='Date',states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True, required=True,)
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company, required=True,states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]})
+    name = fields.Char(string='Description', tracking=True, required=True,)
+    date_from = fields.Datetime(string='Date', tracking=True, required=True,)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company, required=True)
     type = fields.Selection([('deduction', 'Deduction'),('overtime', 'Overtime'),('bonus', 'Bonus'),('productivity', 'Productivity'),], 'Type Category', default='overtime', readonly=False,)
     company_currency_id = fields.Many2one('res.currency', string="Report Company Currency", related='company_id.currency_id', readonly=True, tracking=True,)
-    duration = fields.Float(string="Duration",states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True,)
-    amount = fields.Float(string="Quantity / Amount",states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True,)
-    employee_id = fields.Many2one('hr.employee', string='Employee', states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, tracking=True, required=True,)
+    duration = fields.Float(string="Duration", tracking=True,)
+    amount = fields.Float(string="Quantity / Amount", tracking=True,)
+    employee_id = fields.Many2one('hr.employee', string='Employee', tracking=True, required=True,)
     state = fields.Selection([('draft', 'Draft'), ('approved', 'Approved'), ('rejected', 'Rejected')], string='State', required=True, default='draft', readonly=True, tracking=True,)
     department_id = fields.Many2one('hr.department', string="Department",related='employee_id.department_id', store=True)
     job_id = fields.Many2one('hr.job', string="Job",related='employee_id.job_id', store=True)
     ot_amount = fields.Float(string="OT Amount", compute='_compute_amount', store=True)
-    type_id = fields.Many2one('overtime.bonus.type', string='Type',states={'approved': [('readonly', True)], 'rejected': [('readonly', True)]}, required=True,)
+    type_id = fields.Many2one('overtime.bonus.type', string='Type', required=True,)
     notes = fields.Text(string="Notes", readonly=True)
 
 
