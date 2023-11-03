@@ -3,7 +3,7 @@
     'name': 'Payroll Extra Benefits',
     'summary': 'Overtime and Bonus record',
     'description': """Add option to record Overtime and Bonus with approval option and use it in payslip.""",
-    'version': '16.03',
+    'version': '17.0',
     'sequence': 1,
     'email': 'info@misnedtech.com ',
     'website':'',
@@ -13,7 +13,8 @@
     'currency': 'EUR',
     'license': 'OPL-1',
     "live_test_url" : "",
-    'depends': ['hr_payroll'],
+    'depends': ['hr_payroll',
+                'hr_attendance'],
     'qweb': [],
     'data': [
         'security/payroll_extra_security.xml',
