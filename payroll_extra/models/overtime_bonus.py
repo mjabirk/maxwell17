@@ -49,7 +49,7 @@ class OvertimeBonus(models.Model):
         WORKING_TIME = 8
         for rec in self:
             if rec.type == 'overtime' and rec.employee_id.contract_id:
-                rec.ot_amount = rec.employee_id.contract_id.wage / DAYS_PER_MONTH / WORKING_TIME * rec.duration
+                rec.ot_amount = rec.employee_id.contract_id.wage / DAYS_PER_MONTH / WORKING_TIME * rec.duration * rec.type_id.rate
             elif rec.type == 'bonus':
                 rec.ot_amount = rec.amount
             elif rec.type == 'productivity':
