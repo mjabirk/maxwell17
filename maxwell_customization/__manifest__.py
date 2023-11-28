@@ -13,7 +13,8 @@
     """,
     'depends': ['sale',
                 'purchase',
-                'account',],
+                'account',
+                'hr'],
     'data': [
         'views/sale_order_line_views.xml',
         'views/sale_order_views.xml',

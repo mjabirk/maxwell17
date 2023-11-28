@@ -28,9 +28,13 @@
                 <div class="oe_structure">
                     <table class="table table-sm o_main_table table-borderless">
                         <tbody>
-                        <tr><td><p>Prepared by:</p></td><td><p>Verified by:</p></td><td><p>Approved by:</p></td></tr>
-                        <tr><td><p></p></td><td><p></p></td><td><p></p></td></tr>
-                        <tr><td><p>Procurement Officer</p></td><td><p>Project Engineer</p></td><td><p>Operations Manager</p></td></tr>
+                            <tr><td><p>Prepared by:</p></td><td><p>Verified by:</p></td><td><p>Approved by:</p></td></tr>
+                            <tr><td><t t-if="o.prepared_id"><p t-esc="o.prepared_id.name"/></t></td><td><t t-if="o.verified_id"><p t-esc="o.verified_id.name"/></t></td><td><t t-if="o.approved_id"><p t-esc="o.approved_id.name"/></t></td></tr>
+                            <tr>
+                                <td><t t-if="o.prepared_id and o.prepared_id.job_title"><p t-esc="o.prepared_id.job_title"/></t><t t-if="not(o.prepared_id and o.prepared_id.job_title)"><p>Procurement Officer</p></t></td>
+                                <td><t t-if="o.verified_id and o.verified_id.job_title"><p t-esc="o.verified_id.job_title"/></t><t t-if="not(o.verified_id and o.verified_id.job_title)"><p>Project Engineer</p></t></td>
+                                <td><t t-if="o.approved_id and o.approved_id.job_title"><p t-esc="o.approved_id.job_title"/></t><t t-if="not(o.approved_id and o.approved_id.job_title)"><p>Operations Manager</p></t></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

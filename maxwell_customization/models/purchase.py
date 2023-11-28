@@ -10,4 +10,6 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     project = fields.Char("Project")
-
+    prepared_id = fields.Many2one('hr.employee', string='Prepared By')
+    verified_id = fields.Many2one('hr.employee', string='Verified By')
+    approved_id = fields.Many2one('hr.employee', string='Approved By')
