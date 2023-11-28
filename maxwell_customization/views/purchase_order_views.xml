@@ -8,7 +8,7 @@
             <xpath expr="//field[@name='partner_ref']" position="after">
                 <field name="project"/>
             </xpath>
-            <xpath expr="//field[@name='effective_date']" position="after">
+            <xpath expr="//field[@name='fiscal_position_id']" position="after">
                 <field name="prepared_id" widget="selection"/>
                 <field name="verified_id" widget="selection"/>
                 <field name="approved_id" widget="selection"/>
