@@ -3,6 +3,7 @@ from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 import logging
 import pytz
+import calendar
 _logger = logging.getLogger(__name__)
 
 
@@ -37,27 +38,27 @@ class OvertimeBonus(models.Model):
     type_id = fields.Many2one('overtime.bonus.type', string='Type', required=True,)
     notes = fields.Text(string="Notes", readonly=True)
 
-
     @api.onchange('type_id')
     def _onchange_type_id(self):
         if self.type_id:
             self.type = self.type_id.type == 'fixed' and 'productivity' or (self.type_id.type == 'wage' and 'overtime' or (self.type_id.type == 'manual' and 'bonus' or 'deduction'))
 
-    @api.depends('employee_id', 'amount','duration','type')
+    @api.depends('employee_id', 'amount','duration','type','date_from')
     def _compute_amount(self):
-        DAYS_PER_MONTH = 365.0 / 12
+#        DAYS_PER_MONTH = 365.0 / 12
         WORKING_TIME = 8
         for rec in self:
-            if rec.type == 'overtime' and rec.employee_id.contract_id:
-                rec.ot_amount = rec.employee_id.contract_id.wage / DAYS_PER_MONTH / WORKING_TIME * rec.duration * rec.type_id.rate
-            elif rec.type == 'bonus':
-                rec.ot_amount = rec.amount
-            elif rec.type == 'productivity':
-                rec.ot_amount =rec.amount * rec.type_id.rate
-            elif rec.type == 'deduction':
-                rec.ot_amount = -1 * rec.amount
-            else:
-                rec.ot_amount = 0.0
+            rec.ot_amount = 0.0
+            if rec.date_from and rec.employee_id and rec.employee_id.contract_id and rec.type:
+                DAYS_PER_MONTH = calendar.monthrange(rec.date_from.year, rec.date_from.month)[1]
+                if rec.type == 'overtime' and rec.employee_id.contract_id:
+                    rec.ot_amount = rec.employee_id.contract_id.wage / DAYS_PER_MONTH / WORKING_TIME * rec.duration * rec.type_id.rate
+                elif rec.type == 'bonus':
+                    rec.ot_amount = rec.amount
+                elif rec.type == 'productivity':
+                    rec.ot_amount = rec.amount * rec.type_id.rate
+                elif rec.type == 'deduction':
+                    rec.ot_amount = -1 * rec.amount
 
     @api.constrains('date_from', 'employee_id')
     def _check_ot_bonus(self):
